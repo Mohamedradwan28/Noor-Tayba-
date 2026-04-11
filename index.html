@@ -1,0 +1,2787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بريق كلين - خدمات النظافة الشاملة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #06d6a0;
+            --accent: #f72585;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --light: #f0f9ff;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #0ea5e9, #06d6a0);
+            --gradient-2: linear-gradient(135deg, #0f172a, #1e293b);
+            --gradient-3: linear-gradient(135deg, #f72585, #7209b7);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 25px 60px rgba(0,0,0,0.15);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-1);
+            border-radius: 10px;
+        }
+
+        /* ===== PRELOADER ===== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 10px 0;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transform: rotate(-10deg);
+            transition: transform 0.3s;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1) !important;
+            color: white !important;
+            padding: 12px 28px !important;
+            border-radius: 14px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 5px 20px rgba(14, 165, 233, 0.4);
+            transition: all 0.3s !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.6) !important;
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-toggle span {
+            width: 28px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920') center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(14,165,233,0.15), transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(5deg); }
+        }
+
+        .hero-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            animation: slideInRight 1s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(14,165,233,0.15);
+            border: 1px solid rgba(14,165,233,0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            margin-bottom: 35px;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            border-radius: 16px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 10px 30px rgba(14,165,233,0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(14,165,233,0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background: rgba(14,165,233,0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            display: block;
+        }
+
+        .stat-number span {
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 600;
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: floatCard 4s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .floating-card:nth-child(2) {
+            top: 10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 15%;
+            right: -5%;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-card-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .floating-card-text {
+            color: var(--dark);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .floating-card-text small {
+            display: block;
+            color: var(--gray);
+            font-weight: 400;
+            font-size: 11px;
+        }
+
+        /* ===== MARQUEE ===== */
+        .marquee-section {
+            background: var(--gradient-1);
+            padding: 15px 0;
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marquee 30s linear infinite;
+            width: max-content;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            to { transform: translateX(-50%); }
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        .section {
+            padding: 100px 0;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(14,165,233,0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .section-title .highlight {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ===== SERVICES ===== */
+        .services-section {
+            background: var(--light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-icon-overlay {
+            position: absolute;
+            bottom: -25px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .service-content {
+            padding: 45px 30px 30px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .service-card p {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--dark-light);
+            font-weight: 600;
+        }
+
+        .service-features li i {
+            color: var(--secondary);
+            font-size: 12px;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .service-link:hover {
+            gap: 15px;
+            color: var(--primary-dark);
+        }
+
+        /* ===== WHY US ===== */
+        .why-us-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .why-card {
+            text-align: center;
+            padding: 40px 25px;
+            border-radius: 24px;
+            background: white;
+            border: 2px solid var(--light);
+            transition: all 0.4s;
+        }
+
+        .why-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+        }
+
+        .why-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary);
+            margin: 0 auto 20px;
+            transition: all 0.4s;
+        }
+
+        .why-card:hover .why-icon {
+            background: var(--gradient-1);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .why-card h4 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .why-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* ===== PROCESS ===== */
+        .process-section {
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-section .section-title {
+            color: white;
+        }
+
+        .process-section .section-desc {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            position: relative;
+        }
+
+        .process-grid::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 15%;
+            right: 15%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), var(--primary), transparent);
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .process-number {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 900;
+            color: white;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(14,165,233,0.4);
+        }
+
+        .process-step h4 {
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .process-step p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+        }
+
+        /* ===== ARTICLES ===== */
+        .articles-section {
+            background: var(--light);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.4s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article-image {
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.1);
+        }
+
+        .article-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gradient-1);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .article-content {
+            padding: 30px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .article-card h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .article-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .article-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .article-link:hover {
+            gap: 15px;
+        }
+
+        /* ===== GALLERY ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; height: auto; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h4 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .gallery-overlay p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            background: var(--light);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            position: relative;
+            transition: all 0.4s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .testimonial-quote {
+            font-size: 40px;
+            color: var(--primary);
+            opacity: 0.3;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .testimonial-info span {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .testimonial-stars {
+            color: #fbbf24;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(14,165,233,0.9), rgba(6,214,160,0.9)), url('https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=1920') center/cover fixed;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-content h2 {
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 35px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+            box-shadow: 0 10px 30px rgba(37,211,102,0.4);
+        }
+
+        .btn-whatsapp:hover {
+            background: #20bd5a;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(37,211,102,0.5);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--dark);
+            padding: 80px 0 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .footer-about .logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-about p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: var(--gradient-1);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-1);
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-right: 5px;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+
+        .footer-contact li i {
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 25px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-bottom p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* ===== WHATSAPP & CALL FLOAT ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .whatsapp-tooltip {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .whatsapp-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #25d366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(37,211,102,0.4);
+            transition: all 0.3s;
+            animation: whatsappPulse 2s infinite;
+        }
+
+        @keyframes whatsappPulse {
+            0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+            70% { box-shadow: 0 0 0 20px rgba(37,211,102,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+        }
+
+        .call-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-direction: row-reverse;
+        }
+
+        .call-tooltip {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+        }
+
+        .call-float:hover .call-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .call-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(14,165,233,0.4);
+            transition: all 0.3s;
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 110px;
+            left: 35px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            border: none;
+            font-size: 18px;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-section {
+            background: var(--light);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-form h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .contact-form > p {
+            font-size: 15px;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(0,0,0,0.08);
+            border-radius: 14px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            color: var(--dark);
+            transition: all 0.3s;
+            background: var(--light);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14,165,233,0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .contact-info-side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .contact-info-card:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-info-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .contact-info-card h5 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .contact-info-card p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        /* ===== ARTICLE MODAL ===== */
+        .article-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .article-modal.active {
+            display: flex;
+        }
+
+        .article-modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .article-modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .article-modal-close:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .article-modal-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .article-modal-body {
+            padding: 40px;
+        }
+
+        .article-modal-category {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .article-modal-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .article-modal-meta {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .article-modal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .article-modal-text {
+            font-size: 16px;
+            line-height: 2;
+            color: var(--dark-light);
+        }
+
+        .article-modal-text p {
+            margin-bottom: 20px;
+        }
+
+        .article-modal-text h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 30px 0 15px;
+            color: var(--dark);
+        }
+
+        .article-modal-text ul {
+            margin: 15px 0;
+            padding-right: 25px;
+        }
+
+        .article-modal-text li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero-desc {
+                margin: 0 auto 35px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .why-us-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .process-grid::before {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+                height: 300px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--dark);
+                flex-direction: column;
+                padding: 100px 30px 30px;
+                transition: right 0.4s;
+                gap: 5px;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-desc {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 30px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-column: span 1;
+            }
+
+            .why-us-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-content h2 {
+                font-size: 30px;
+            }
+
+            .article-modal-body {
+                padding: 25px;
+            }
+
+            .article-modal-title {
+                font-size: 24px;
+            }
+
+            .whatsapp-float,
+            .call-float {
+                bottom: 15px;
+            }
+
+            .whatsapp-btn,
+            .call-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            .scroll-top {
+                bottom: 85px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-spinner"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-sparkles"></i>
+                </div>
+                <span class="logo-text"><span> بريق 
+كلين</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#why-us">لماذا نحن</a></li>
+                <li><a href="#articles">المقالات</a></li>
+                <li><a href="#gallery">أعمالنا</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+                <li><a href="#contact" class="nav-cta">احجز الآن</a></li>
+            </ul>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-award"></i>
+                    الشركة الأولى في خدمات النظافة
+                </div>
+                <h1>
+                    خدمات تنظيف <span class="highlight">شاملة</span><br>
+                    بمعايير <span class="highlight">عالمية</span>
+                </h1>
+                <p class="hero-desc">
+                    نقدم لك أفضل خدمات التنظيف المتكاملة بأحدث التقنيات وأفضل المعدات. من تنظيف السجاد والكنب إلى عزل الخزانات وتنظيف مداخن المطاعم.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-primary">
+                        <i class="fas fa-concierge-bell"></i>
+                        اكتشف خدماتنا
+                    </a>
+                    <a href="https://wa.me/9660551771407" class="btn btn-outline">
+                        <i class="fab fa-whatsapp"></i>
+                        تواصل واتساب
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">+5000</span>
+                        <span class="stat-label">عميل سعيد</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">+15</span>
+                        <span class="stat-label">سنة خبرة</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">+50</span>
+                        <span class="stat-label">فني محترف</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800" alt="تنظيف احترافي">
+                    <div class="floating-card">
+                        <div class="floating-card-icon" style="background: var(--gradient-1);">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <div class="floating-card-text">
+                            تنظيف كنب
+                            <small>بخار متقدم</small>
+                        </div>
+                    </div>
+                    <div class="floating-card">
+                        <div class="floating-card-icon" style="background: var(--gradient-3);">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="floating-card-text">
+                            تنظيف شقق
+                            <small>تعقيم شامل</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف سجاد</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف كنب</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف موكيت</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف شقق بالبخار</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف خزانات</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> عزل حراري ومائي</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف مداخن مطاعم</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تعقيم وتطهير</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف سجاد</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف كنب</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف موكيت</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف شقق بالبخار</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف خزانات</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> عزل حراري ومائي</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تنظيف مداخن مطاعم</div>
+            <div class="marquee-item"><i class="fas fa-star"></i> تعقيم وتطهير</div>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section class="section services-section" id="services">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-broom"></i>
+                    خدماتنا المتميزة
+                </div>
+                <h2 class="section-title">حلول تنظيف <span class="highlight">متكاملة</span></h2>
+                <p class="section-desc">نوفر لك مجموعة شاملة من خدمات التنظيف بأعلى جودة وأفضل الأسعار مع ضمان رضاكم التام</p>
+            </div>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600" alt="تنظيف السجاد">
+                        <div class="service-icon-overlay" style="background: var(--gradient-1);">
+                            <i class="fas fa-rug"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف السجاد</h3>
+                        <p>نستخدم أحدث تقنيات التنظيف بالبخار والمعدات المتخصصة لإزالة أعمق البقع والأوساخ من سجادك مع الحفاظ على الألوان والأنسجة.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> إزالة البقع الصعبة</li>
+                            <li><i class="fas fa-check-circle"></i> تعقيم ومكافحة البكتيريا</li>
+                            <li><i class="fas fa-check-circle"></i> تجفيف سريع</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="تنظيف الكنب">
+                        <div class="service-icon-overlay" style="background: var(--gradient-3);">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف الكنب والمجالس</h3>
+                        <p>خدمة تنظيف عميقة للكنب والمجالس باستخدام البخار والمنظفات الآمنة لإعادة مظهرها الجديد وإزالة الروائح الكريهة.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> تنظيف بالبخار المتقدم</li>
+                            <li><i class="fas fa-check-circle"></i> إزالة البقع والروائح</li>
+                            <li><i class="fas fa-check-circle"></i> حماية الأقمشة</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREuhMyqKS1_2j7ULesMRX5–cSR4rdCUqtBdvJOjzVpA&s=10" alt="تنظيف الموكيت">
+                        <div class="service-icon-overlay" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف الموكيت</h3>
+                        <p>تنظيف الموكيت والباركيه بأحدث ماكينات الغسيل والشطف لإزالة الأتربة المتراكمة والبقع مع الحفاظ على جودة الأرضيات.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> غسيل عميق وشامل</li>
+                            <li><i class="fas fa-check-circle"></i> إزالة بقع الدهانات</li>
+                            <li><i class="fas fa-check-circle"></i> استعادة الألوان</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmHrHN6FP7NlQGRAt2k-xtZdS9KF04l5d6e7dun9HuTg&s=10
+" alt="تنظيف الشقق">
+                        <div class="service-icon-overlay" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                            <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف الشقق بالبخار</h3>
+                        <p>خدمة تنظيف شاملة للشقق والفلل بالبخار تشمل المطابخ والحمامات والغرف مع التعقيم الكامل والتلميع الاحترافي.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> تنظيف شامل لكل الغرف</li>
+                            <li><i class="fas fa-check-circle"></i> تعقيم بالبخار</li>
+                            <li><i class="fas fa-check-circle"></i> تلميع الأرضيات</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjgpe0AJ-VpPmsiuvjvPAwdgPwuiflia8M2ONXMaTQw&s=10" alt="تنظيف الخزانات">
+                        <div class="service-icon-overlay" style="background: linear-gradient(135deg, #14b8a6, #0d9488);">
+                            <i class="fas fa-tank-water"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف وتعقيم الخزانات</h3>
+                        <p>تنظيف وتعقيم خزانات المياه العلوية والأرضية بمواد معقمة وآمنة مع ضمان نقاء المياه وسلامتها للاستخدام الآدمي.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> تنظيف وتعقيم كامل</li>
+                            <li><i class="fas fa-check-circle"></i> مواد معتمدة وآمنة</li>
+                            <li><i class="fas fa-check-circle"></i> فحص دوري</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                
+
+                <!-- Service 7 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMgeaK3nRmEj5RgXre6I5csX5u7occ0oVtILuQUm7AhA&s=10" alt="تنظيف المداخن">
+                        <div class="service-icon-overlay" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                            <i class="fas fa-fire-burner"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>تنظيف مداخن المطاعم</h3>
+                        <p>تنظيف شامل لمداخن المطابخ التجارية ومطاعم按照 معايير السلامة الدولية مع إزالة الدهون المتراكمة والوقاية من الحرائق.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> إزالة الدهون والشحوم</li>
+                            <li><i class="fas fa-check-circle"></i> مطابقة معايير الدفاع المدني</li>
+                            <li><i class="fas fa-check-circle"></i> شهادات تنظيف معتمدة</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service 8 -->
+                <div class="service-card reveal">
+                    <div class="service-image">
+                        <img src="https://cdn.salla.sa/KzOVg/9ea65b2b-4687-4988-948a-9e68f0d7e217-1000x1000-F4Vc1QmIPOwGvBrwDTUSpFkrAnz8yAru8Usjsayj.jpg" alt="مكافحة الحشرات">
+                        <div class="service-icon-overlay" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                            <i class="fas fa-bug-slash"></i>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <h3>مكافحة الحشرات والتعقيم</h3>
+                        <p>خدمات مكافحة الحشرات والقوارض بمواد آمنة ومعتمدة مع التعقيم الشامل للمنازل والمنشآت التجارية.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> مواد آمنة للأطفال</li>
+                            <li><i class="fas fa-check-circle"></i> ضمان القضاء التام</li>
+                            <li><i class="fas fa-check-circle"></i> متابعة دورية</li>
+                        </ul>
+                        <a href="#contact" class="service-link">
+                            احجز الآن
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US -->
+    <section class="section" id="why-us">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-trophy"></i>
+                    مميزاتنا
+                </div>
+                <h2 class="section-title">لماذا تختار <span class="highlight">بريق كلين</span>؟</h2>
+                <p class="section-desc">نتميز بتقديم خدمات تنظيف استثنائية تجمع بين الجودة والسرعة والأسعار المناسبة</p>
+            </div>
+            <div class="why-us-grid">
+                <div class="why-card reveal">
+                    <div class="why-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h4>جودة مضمونة</h4>
+                    <p>نضمن لك أعلى مستويات الجودة مع إمكانية إعادة التنظيف في حالة عدم الرضا</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>سرعة في التنفيذ</h4>
+                    <p>نلتزم بالمواعيد المحددة وننجز العمل في أسرع وقت ممكن دون التأثير على الجودة</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h4>أسعار تنافسية</h4>
+                    <p>نقدم أفضل الأسعار في السوق مع الحفاظ على أعلى معايير الجودة والاحترافية</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>مواد آمنة</h4>
+                    <p>نستخدم مواد تنظيف صديقة للبيئة وآمنة على الأطفال والحيوانات الأليفة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section process-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge" style="background: rgba(14,165,233,0.2);">
+                    <i class="fas fa-list-ol"></i>
+                    خطوات العمل
+                </div>
+                <h2 class="section-title">كيف نعمل <span class="highlight">معك</span>؟</h2>
+                <p class="section-desc">عملية بسيطة وسهلة للحصول على خدمة التنظيف المثالية</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step reveal">
+                    <div class="process-number">1</div>
+                    <h4>تواصل معنا</h4>
+                    <p>اتصل بنا أو أرسل رسالة واتساب لتحديد الخدمة المطلوبة</p>
+                </div>
+                <div class="process-step reveal">
+                    <div class="process-number">2</div>
+                    <h4>معاينة مجانية</h4>
+                    <p>نرسل فريقنا للمعاينة وتقديم عرض سعر مناسب ومفصل</p>
+                </div>
+                <div class="process-step reveal">
+                    <div class="process-number">3</div>
+                    <h4>تنفيذ العمل</h4>
+                    <p>فريقنا المحترف ينفذ العمل بأعلى جودة وفي الوقت المحدد</p>
+                </div>
+                <div class="process-step reveal">
+                    <div class="process-number">4</div>
+                    <h4>ضمان الجودة</h4>
+                    <p>نتأكد من رضاك التام ونقدم ضمان على جميع خدماتنا</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLES -->
+    <section class="section articles-section" id="articles">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-newspaper"></i>
+                    المدونة
+                </div>
+                <h2 class="section-title">مقالات <span class="highlight">ونصائح</span></h2>
+                <p class="section-desc">اقرأ أحدث المقالات والنصائح في عالم التنظيف والتعقيم</p>
+            </div>
+            <div class="articles-grid">
+                <!-- Article 1 -->
+                <div class="article-card reveal">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600" alt="تنظيف السجاد">
+                        <span class="article-category">تنظيف السجاد</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="fas fa-calendar"></i> 15 يناير 2026</span>
+                            <span><i class="fas fa-clock"></i> 5 دقائق قراءة</span>
+                        </div>
+                        <h3>دليلك الشامل لتنظيف السجاد والحفاظ عليه</h3>
+                        <p>تعرف على أفضل الطرق والأساليب لتنظيف السجاد بشكل صحيح وكيفية الحفاظ على نظافته لأطول فترة ممكنة...</p>
+                        <button class="article-link" onclick="openArticle(0)" style="background: none; border: none; cursor: pointer; font-family: inherit;">
+                            اقرأ المزيد
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="article-card reveal">
+                    <div class="article-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzc1UMF9s7zhPIknNLDG2hnQDTkbZKmJKnD9Xn2HVGaw&s=10" alt="مداخن المطاعم">
+                        <span class="article-category">مداخن المطاعم</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span><i class="fas fa-calendar"></i> 8 يناير 2026</span>
+                            <span><i class="fas fa-clock"></i> 7 دقائق قراءة</span>
+                        </div>
+                        <h3>لماذا تنظيف مداخن المطاعم ضروري للسلامة؟</h3>
+                        <p>اكتشف أهمية تنظيف مداخن المطابخ التجارية بشكل دوري وكيف يساعد في الوقاية من الحرائق...</p>
+                        <button class="article-link" onclick="openArticle(1)" style="background: none; border: none; cursor: pointer; font-family: inherit;">
+                            اقرأ المزيد
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+               
+
+    <!-- GALLERY -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-images"></i>
+                    أعمالنا
+                </div>
+                <h2 class="section-title">معرض <span class="highlight">أعمالنا</span></h2>
+                <p class="section-desc">شاهد بعض من أعمالنا التي نفخر بها ونتائج التنظيف الاحترافي</p>
+            </div>
+            <div class="gallery-grid reveal">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800" alt="تنظيف فيلا">
+                    <div class="gallery-overlay">
+                        <h4>تنظيف فيلا كاملة</h4>
+                        <p>تنظيف شامل بالبخار والتعقيم</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600" alt="تنظيف كنب">
+                    <div class="gallery-overlay">
+                        <h4>تنظيف كنب ومجالس</h4>
+                        <p>قبل وبعد التنظيف بالبخار</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzc1UMF9s7zhPIknNLDG2hnQDTkbZKmJKnD9Xn2HVGaw&s=10" alt="تنظيف مدخن">
+                    <div class="gallery-overlay">
+                        <h4>تنظيف مدخن مطعم</h4>
+                        <p>إزالة الدهون والشحوم</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600" alt="تنظيف سجاد">
+                    <div class="gallery-overlay">
+                        <h4>تنظيف سجاد فاخر</h4>
+                        <p>استعادة الألوان الأصلية</p>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testimonials-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-quote-right"></i>
+                    آراء العملاء
+                </div>
+                <h2 class="section-title">ماذا يقول <span class="highlight">عملاؤنا</span>؟</h2>
+                <p class="section-desc">نفخر بثقة عملائنا وآرائهم الإيجابية حول خدماتنا</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">خدمة ممتازة وفريق عمل محترف جداً. نظفوا الشقة بالكامل بالبخار والنتيجة كانت مذهلة. أنصح الجميع بالتعامل معهم.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="أحمد محمد">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>أحمد محمد</h5>
+                            <span>صاحب فيلا - الرياض</span>
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">نظفوا كنب المنزل والسجاد والنتيجة فاقت التوقعات. الأسعار معقولة والجودة عالية جداً. شكراً بريق كلين!</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="سارة العلي">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>سارة العلي</h5>
+                            <span>ربة منزل - جدة</span>
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">تعاملنا معهم لتنظيف مدخن المطعم والحصول على شهادة الدفاع المدني. عمل احترافي والتزام بالمواعيد.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100" alt="خالد العمري">
+                        </div>
+                        <div class="testimonial-info">
+                            <h5>خالد العمري</h5>
+                            <span>صاحب مطعم - الدمام</span>
+                            <div class="testimonial-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content reveal">
+                <h2>جاهز لتنظيف منزلك؟ 🏠</h2>
+                <p>تواصل معنا الآن واحصل على استشارة مجانية وعرض سعر مناسب لاحتياجاتك</p>
+                <div class="cta-buttons">
+                    <a href="tel:+9660551771407" class="btn btn-white">
+                        <i class="fas fa-phone"></i>
+                        اتصل بنا الآن
+                    </a>
+                    <a href="https://wa.me/9660551771407" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        واتساب مباشر
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">
+                    <i class="fas fa-envelope"></i>
+                    تواصل معنا
+                </div>
+                <h2 class="section-title">نحن هنا <span class="highlight">لمساعدتك</span></h2>
+                <p class="section-desc">أرسل لنا استفسارك وسنرد عليك في أسرع وقت ممكن</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-form reveal">
+                    <h3>أرسل طلبك</h3>
+                    <p>املأ النموذج التالي وسنتواصل معك خلال 30 دقيقة</p>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>الاسم الكامل</label>
+                                <input type="text" placeholder="أدخل اسمك الكامل" required>
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الجوال</label>
+                                <input type="tel" placeholder="05xxxxxxxx" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" placeholder="example@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>نوع الخدمة</label>
+                            <select required>
+                                <option value="">اختر الخدمة المطلوبة</option>
+                                <option>تنظيف سجاد</option>
+                                <option>تنظيف كنب ومجالس</option>
+                                <option>تنظيف موكيت</option>
+                                <option>تنظيف شقة بالبخار</option>
+                                <option>تنظيف خزان مياه</option>
+                                <option>عزل حراري ومائي</option>
+                                <option>تنظيف مدخن مطعم</option>
+                                <option>مكافحة حشرات</option>
+                                <option>خدمة أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>تفاصيل إضافية</label>
+                            <textarea placeholder="اكتب تفاصيل طلبك هنا..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-paper-plane"></i>
+                            إرسال الطلب
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info-side reveal">
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon" style="background: var(--gradient-1);">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h5>اتصل بنا</h5>
+                            <p dir="ltr">+9660551771407</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon" style="background: #25d366;">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h5>واتساب</h5>
+                            <p dir="ltr">+9660551771407</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon" style="background: var(--gradient-3);">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h5>البريد الإلكتروني</h5>
+                            <p>info@breeqclean.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon" style="background: linear-gradient(135deg, #f97316, #ef4444);">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h5>العنوان</h5>
+                            <p>الرياض، المملكة العربية السعودية</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon" style="background: linear-gradient(135deg, #14b8a6, #0d9488);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h5>ساعات العمل</h5>
+                            <p>24/7 - متاحين دائماً لخدمتك</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-sparkles"></i>
+                        </div>
+                        <span class="logo-text"><span> بريق كلين</span></span>
+                    </a>
+                    <p>شركة بريق كلين هي الشركة الرائدة في خدمات النظافة الشاملة في المملكة العربية السعودية. نقدم خدماتنا بأعلى معايير الجودة والاحترافية مع فريق عمل مدرب ومعدات حديثة.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>خدماتنا</h4>
+                    <ul class="footer-links">
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف السجاد</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف الكنب</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف الموكيت</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف الشقق</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف الخزانات</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> العزل الحراري</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> تنظيف المداخن</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>روابط سريعة</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-chevron-left"></i> الرئيسية</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-left"></i> خدماتنا</a></li>
+                        <li><a href="#articles"><i class="fas fa-chevron-left"></i> المقالات</a></li>
+                        <li><a href="#gallery"><i class="fas fa-chevron-left"></i> أعمالنا</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-left"></i> تواصل معنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>تواصل معنا</h4>
+                    <ul class="footer-links footer-contact">
+                        <li>
+                            <i class="fas fa-location-dot"></i>
+                            <span>الرياض، المملكة العربية السعودية</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span dir="ltr">+9660551771407</span>
+                        </li>
+                        <li>
+                            <i class="fab fa-whatsapp"></i>
+                            <span dir="ltr">+9660551771407</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>info@breeqclean.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 بريق كلين. جميع الحقوق محفوظة</p>
+                <p>تصميم وتطوير بـ ❤️</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <div class="whatsapp-float">
+        <span class="whatsapp-tooltip">تواصل معنا واتساب</span>
+        <a href="https://wa.me/9660551771407" class="whatsapp-btn" target="_blank" title="تواصل عبر واتساب">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- CALL FLOAT -->
+    <div class="call-float">
+        <span class="call-tooltip">اتصل بنا الآن</span>
+        <a href="tel:+9660551771407" class="call-btn" title="اتصل بنا">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ARTICLE MODAL -->
+    <div class="article-modal" id="articleModal">
+        <div class="article-modal-content">
+            <button class="article-modal-close" onclick="closeArticle()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img src="" alt="" class="article-modal-image" id="modalImage">
+            <div class="article-modal-body">
+                <span class="article-modal-category" id="modalCategory"></span>
+                <h2 class="article-modal-title" id="modalTitle"></h2>
+                <div class="article-modal-meta">
+                    <span><i class="fas fa-calendar"></i> <span id="modalDate"></span></span>
+                    <span><i class="fas fa-clock"></i> <span id="modalReadTime"></span></span>
+                </div>
+                <div class="article-modal-text" id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Articles Data
+        const articles = [
+            {
+                title: "دليلك الشامل لتنظيف السجاد والحفاظ عليه",
+                category: "تنظيف السجاد",
+                date: "15 يناير 2026",
+                readTime: "5 دقائق قراءة",
+                image: "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=1200",
+                content: `
+                    <p>يُعد السجاد من أهم عناصر الديكور في المنزل، ولكنه أيضاً من أكثر العناصر عرضة للاتساخ وتراكم الأتربة. في هذا المقال، نقدم لك دليلاً شاملاً لكيفية تنظيف السجاد بشكل صحيح والحفاظ على مظهره الجميل لأطول فترة ممكنة.</p>
+                    
+                    <h3>لماذا التنظيف الاحترافي مهم؟</h3>
+                    <p>التنظيف المنتظم للسجاد لا يحافظ فقط على مظهره الجميل، بل يحمي أيضاً صحة عائلتك من خلال:</p>
+                    <ul>
+                        <li>إزالة عث الغبار والمواد المثيرة للحساسية</li>
+                        <li>القضاء على البكتيريا والجراثيم المتراكمة</li>
+                        <li>إزالة الروائح الكريهة</li>
+                        <li>إطالة عمر السجاد والحفاظ على ألوانه</li>
+                    </ul>
+
+                    <h3>أفضل طرق تنظيف السجاد</h3>
+                    <p>تتنوع طرق تنظيف السجاد حسب نوعه ودرجة اتساخه:</p>
+                    <ul>
+                        <li><strong>التنظيف بالبخار:</strong> الأفضل للسجاد العميق والبقع الصعبة</li>
+                        <li><strong>التنظيف الجاف:</strong> مناسب للسجاد الحساس والحرير</li>
+                        <li><strong>الشامبو:</strong> فعال في إزالة البقع السطحية</li>
+                    </ul>
+
+                    <h3>نصائح للحفاظ على السجاد</h3>
+                    <p>إليك بعض النصائح العملية:</p>
+                    <ul>
+                        <li>الكنس المنتظم مرة أو مرتين أسبوعياً</li>
+                        <li>معالجة البقع فور حدوثها</li>
+                        <li>تجنب التعرض المباشر لأشعة الشمس</li>
+                        <li>استخدام واقيات الأثاث لمنع الانبعاج</li>
+                        <li>التنظيف العميق كل 6-12 شهراً</li>
+                    </ul>
+
+                    <p>تذكر أن التنظيف الاحترافي الدوري هو الاستثمار الأفضل للحفاظ على سجادك!</p>
+                `
+            },
+            {
+                title: "لماذا تنظيف مداخن المطاعم ضروري للسلامة؟",
+                category: "مداخن المطاعم",
+                date: "8 يناير 2026",
+                readTime: "7 دقائق قراءة",
+                image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200",
+                content: `
+                    <p>تُعتبر مداخن المطابخ التجارية من أهم أنظمة السلامة في المطاعم، وإهمال تنظيفها قد يؤدي إلى كوارث حقيقية. دعنا نوضح لك أهمية هذا الموضوع الحيوي.</p>
+
+                    <h3>مخاطر إهمال تنظيف المداخن</h3>
+                    <p>تتراكم الدهون والشحوم في المداخن بشكل يومي، مما يؤدي إلى:</p>
+                    <ul>
+                        <li><strong>خطر الحرائق:</strong> الدهون المتراكمة قابلة للاشتعال بشدة</li>
+                        <li><strong>انسداد التهوية:</strong> يؤثر على كفاءة الشفط وجودة الهواء</li>
+                        <li><strong>تكاثر الحشرات:</strong> البيئة المثالية للآفات</li>
+                        <li><strong>مخالفات الدفاع المدني:</strong> قد تؤدي لإغلاق المطعم</li>
+                    </ul>
+
+                    <h3>متى يجب تنظيف المدخنة؟</h3>
+                    <p>يختلف التكرار حسب حجم المطعم:</p>
+                    <ul>
+                        <li>المطاعم الكبيرة: كل 3 أشهر</li>
+                        <li>المطاعم المتوسطة: كل 6 أشهر</li>
+                        <li>المطاعم الصغيرة: سنوياً على الأقل</li>
+                    </ul>
+
+                    <h3>عملية التنظيف الاحترافي</h3>
+                    <p>تشمل خدماتنا:</p>
+                    <ul>
+                        <li>فحص شامل لنظام الشفط</li>
+                        <li>إزالة الدهون والشحوم المتراكمة</li>
+                        <li>تنظيف الفلاتر والمراوح</li>
+                        <li>التأكد من كفاءة النظام</li>
+                        <li>إصدار شهادة تنظيف معتمدة</li>
+                    </ul>
+
+                    <h3>الفوائد</h3>
+                    <p>الالتزام بتنظيف المداخن يضمن لك:</p>
+                    <ul>
+                        <li>السلامة من الحرائق</li>
+                        <li>الامتثال للوائح الدفاع المدني</li>
+                        <li>تحسين كفاءة النظام وتوفير الطاقة</li>
+                        <li>بيئة عمل صحية للعاملين</li>
+                    </ul>
+
+                    <p>لا تنتظر حتى تحدث الكارثة! احرص على الصيانة الدورية لمداخن مطعمك.</p>
+                `
+            },
+            {
+                title: "فوائد العزل الحراري والمائي للأسطح",
+                category: "العزل",
+                date: "1 يناير 2026",
+                readTime: "6 دقائق قراءة",
+                image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1200",
+                content: `
+                    <p>يُعد العزل الحراري والمائي من أهم الاستثمارات في حماية منزلك وتوفير الطاقة. في هذا المقال، نستعرض الفوائد العديدة للعزل الاحترافي.</p>
+
+                    <h3>الفوائد الاقتصادية</h3>
+                    <p>العزل الحراري يوفر لك:</p>
+                    <ul>
+                        <li>تخفيض استهلاك الكهرباء بنسبة تصل إلى 40%</li>
+                        <li>تقليل فواتير التكييف في الصيف</li>
+                        <li>تقليل استهلاك التدفئة في الشتاء</li>
+                        <li>عائد استثمار خلال 3-5 سنوات</li>
+                    </ul>
+
+                    <h3>الحماية من التسربات المائية</h3>
+                    <p>العزل المائي يحمي منزلك من:</p>
+                    <ul>
+                        <li>تسربات المياه التي تسبب التشققات</li>
+                        <li>الرطوبة والعفن الضار بالصحة</li>
+                        <li>تآكل الحديد والخرسانة</li>
+                        <li>تلف الدهانات والديكورات</li>
+                    </ul>
+
+                    <h3>الراحة الحرارية</h3>
+                    <p>العزل الجيد يوفر:</p>
+                    <ul>
+                        <li>درجة حرارة مستقرة داخل المنزل</li>
+                        <li>تقليل الفارق الحراري بين الصيف والشتاء</li>
+                        <li>بيئة معيشية أكثر راحة</li>
+                        <li>تقليل الضوضاء الخارجية</li>
+                    </ul>
+
+                    <h3>أنواع العزل</h3>
+                    <p>نقدم حلول عزل متعددة:</p>
+                    <ul>
+                        <li><strong>العزل الحراري:</strong> باستخدام البوليسترين أو الصوف الصخري</li>
+                        <li><strong>العزل المائي:</strong> مواد битумية أو إسمنتية</li>
+                        <li><strong>العزل المزدوج:</strong> حل متكامل للحماية الشاملة</li>
+                    </ul>
+
+                    <h3>ضمان الجودة</h3>
+                    <p>خدماتنا تشمل:</p>
+                    <ul>
+                        <li>فحص مجاني للأسطح</li>
+                        <li>استخدام مواد عالية الجودة</li>
+                        <li>فريق عمل متخصص</li>
+                        <li>ضمان يصل إلى 10 سنوات</li>
+                    </ul>
+
+                    <p>استثمر في عزل منزلك اليوم واستمتع بالراحة والتوفير لسنوات قادمة!</p>
+                `
+            }
+        ];
+
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 800);
+        });
+
+        // Navbar Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            mobileToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // Scroll to Top
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Form Submit
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('شكراً لك! تم إرسال طلبك بنجاح. سنتواصل معك خلال 30 دقيقة.');
+            e.target.reset();
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Article Modal Functions
+        function openArticle(index) {
+            const article = articles[index];
+            document.getElementById('modalImage').src = article.image;
+            document.getElementById('modalCategory').textContent = article.category;
+            document.getElementById('modalTitle').textContent = article.title;
+            document.getElementById('modalDate').textContent = article.date;
+            document.getElementById('modalReadTime').textContent = article.readTime;
+            document.getElementById('modalContent').innerHTML = article.content;
+            document.getElementById('articleModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticle() {
+            document.getElementById('articleModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outside click
+        document.getElementById('articleModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('articleModal')) {
+                closeArticle();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeArticle();
+            }
+        });
+    </script>
+</body>
+</html>
